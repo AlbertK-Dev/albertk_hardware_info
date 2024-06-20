@@ -44,7 +44,7 @@
         return '64-bit';
       } else if (userAgent.includes('i686') || userAgent.includes('x86')) {
         return '32-bit';
-      } else if (userAgent.includes('arm') || userAgent.includes('aarch64')) {
+      } else if (/android/.test(userAgent)) {
         if (/aarch64/.test(userAgent) || /armv8/.test(userAgent)) {
           return 'ARM64 (Android)';
         } else if (/arm/.test(userAgent)) {
