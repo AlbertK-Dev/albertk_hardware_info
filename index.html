@@ -30,6 +30,12 @@
         <span class="info-label">Version d'application recommandée :</span>
         <span class="info-value" id="recommended-app-version"></span>
       </div>
+      <div class="info-item">
+        <span class="info-label">Télécharger l'application :</span>
+        <span class="info-value">
+          <a id="download-link" href="https://mega.nz/folder/vSxjAACD#i9wF16pnuLJHp4q6cxlftg" target="_blank"></a>
+        </span>
+      </div>
     </div>
   </div>
 
@@ -98,17 +104,24 @@
       const cpuArchitecture = getCPUArchitecture().toLowerCase();
 
       if (cpuArchitecture.includes('arm64') || cpuArchitecture.includes('aarch64')) {
-        return 'ARM64';
+        return 'arm64-v8a';
       } else if (cpuArchitecture.includes('arm')) {
-        return 'ARM';
+        return 'armeabi-v7a';
       } else if (cpuArchitecture.includes('x86_64')) {
         return 'x86_64';
       } else if (cpuArchitecture.includes('x86')) {
         return 'x86';
       } else {
-        return 'Indéterminé';
+        return 'Universal';
       }
     }
+
+
+    const recommendedAppVersion = getRecommendedAppVersion();
+    const downloadLink = document.getElementById('download-link');
+    downloadLink.textContent = `Télécharger l'application app-${recommendedAppVersion}-release.apk`;
+   
+
 
     document.getElementById('cpu-architecture').textContent = getCPUArchitecture();
     document.getElementById('logical-processors').textContent = navigator.hardwareConcurrency || 'Information non disponible';
