@@ -26,6 +26,10 @@
         <span class="info-label">Nombre de processeurs logiques :</span>
         <span class="info-value" id="logical-processors"></span>
       </div>
+      <div class="info-item">
+        <span class="info-label">Version d'application recommandée :</span>
+        <span class="info-value" id="recommended-app-version"></span>
+      </div>
     </div>
   </div>
 
@@ -33,38 +37,21 @@
     document.getElementById('user-agent').textContent = navigator.userAgent;
     document.getElementById('platform').textContent = navigator.platform;
 
-    function getCPUArchitecture() {
+    function getArchitectureInUserAgent() {
       const userAgent = navigator.userAgent.toLowerCase();
-      const platform = navigator.platform.toLowerCase();
 
       if (userAgent.includes('wow64') || userAgent.includes('win64') || userAgent.includes('x64')) {
         return '64-bit';
       } else if (userAgent.includes('i686') || userAgent.includes('x86')) {
         return '32-bit';
       } else if (userAgent.includes('arm') || userAgent.includes('aarch64')) {
-        return 'ARM';
-      } else if (/android/.test(userAgent)) {
         if (/aarch64/.test(userAgent) || /armv8/.test(userAgent)) {
           return 'ARM64 (Android)';
         } else if (/arm/.test(userAgent)) {
           return 'ARM (Android)';
         } else {
-          // Supposition pour les versions récentes d'Android
-          const androidVersion = userAgent.match(/android\s([0-9\.]+)/);
-          if (androidVersion && parseFloat(androidVersion[1]) >= 5.0) {
-            return 'ARM (supposition Android récent)';
-          } else {
-            return 'Architecture inconnue (Android)';
-          }
+          return 'Android'; // Retourne "Android" pour une architecture inconnue dans userAgent
         }
-      } else if (platform.includes('linux') && platform.includes('armv8.1')) {
-        return 'ARMv8.1 (Linux)';
-      } else if (platform.includes('linux') && platform.includes('arm')) {
-        return 'ARM (Linux)';
-      } else if (platform.includes('linux') && platform.includes('x86_64')) {
-        return 'x86_64 (Linux)';
-      } else if (platform.includes('linux') && platform.includes('i686')) {
-        return 'x86 (Linux)';
       } else if (/iphone|ipad|ipod/.test(userAgent)) {
         if (/arm64/.test(userAgent) || /aarch64/.test(userAgent)) {
           return 'ARM64 (iOS)';
@@ -78,8 +65,54 @@
       }
     }
 
+    function getArchitectureInPlatform() {
+      const platform = navigator.platform.toLowerCase();
+
+      if (platform.includes('linux') && platform.includes('armv8.1')) {
+        return 'ARMv8.1 (Linux)';
+      } else if (platform.includes('linux') && platform.includes('arm')) {
+        return 'ARM (Linux)';
+      } else if (platform.includes('linux') && platform.includes('x86_64')) {
+        return 'x86_64 (Linux)';
+      } else if (platform.includes('linux') && platform.includes('i686')) {
+        return 'x86 (Linux)';
+      } else {
+        return null; // Retourne null si aucune architecture valide n'est détectée dans la plateforme
+      }
+    }
+
+    function getCPUArchitecture() {
+      let architecture = getArchitectureInUserAgent();
+
+      if (architecture === 'Android') {
+        const platformArchitecture = getArchitectureInPlatform();
+        if (platformArchitecture) {
+          architecture += ' ' + platformArchitecture;
+        }
+      }
+
+      return architecture || 'Architecture inconnue';
+    }
+
+    function getRecommendedAppVersion() {
+      const cpuArchitecture = getCPUArchitecture().toLowerCase();
+
+      if (cpuArchitecture.includes('arm64') || cpuArchitecture.includes('aarch64')) {
+        return 'ARM64';
+      } else if (cpuArchitecture.includes('arm')) {
+        return 'ARM';
+      } else if (cpuArchitecture.includes('x86_64')) {
+        return 'x86_64';
+      } else if (cpuArchitecture.includes('x86')) {
+        return 'x86';
+      } else {
+        return 'Indéterminé';
+      }
+    }
+
     document.getElementById('cpu-architecture').textContent = getCPUArchitecture();
     document.getElementById('logical-processors').textContent = navigator.hardwareConcurrency || 'Information non disponible';
+    document.getElementById('recommended-app-version').textContent = getRecommendedAppVersion();
   </script>
 </body>
 </html>
