@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Informations sur Votre Appareil</h1>
+    <h1>Informations sur le Matériel de l'Utilisateur</h1>
     <div class="info">
       <div class="info-item">
         <span class="info-label">Agent utilisateur :</span>
@@ -33,28 +33,38 @@
     document.getElementById('user-agent').textContent = navigator.userAgent;
     document.getElementById('platform').textContent = navigator.platform;
 
-    // Détection de l'architecture du CPU
     function getCPUArchitecture() {
       const userAgent = navigator.userAgent.toLowerCase();
+
       if (userAgent.includes('wow64') || userAgent.includes('win64') || userAgent.includes('x64')) {
         return '64-bit';
       } else if (userAgent.includes('i686') || userAgent.includes('x86')) {
         return '32-bit';
       } else if (userAgent.includes('arm') || userAgent.includes('aarch64')) {
         return 'ARM';
-      } else if (/android.*arm/.test(userAgent)) {
-        return 'ARM (Android)';
-      } else if (/android.*arm64/.test(userAgent)) {
-        return 'ARM64 (Android)';
-      } else if (/iphone|ipad|ipod/.test(userAgent) && /arm/.test(userAgent)) {
-        return 'ARM64 (iOS)';
+      } else if (/android/.test(userAgent)) {
+        if (/armv8/.test(userAgent) || /aarch64/.test(userAgent)) {
+          return 'ARM64 (Android)';
+        } else if (/arm/.test(userAgent)) {
+          return 'ARM (Android)';
+        } else {
+          return 'Architecture inconnue (Android)';
+        }
+      } else if (/iphone|ipad|ipod/.test(userAgent)) {
+        if (/arm64/.test(userAgent) || /aarch64/.test(userAgent)) {
+          return 'ARM64 (iOS)';
+        } else if (/arm/.test(userAgent)) {
+          return 'ARM (iOS)';
+        } else {
+          return 'Architecture inconnue (iOS)';
+        }
       } else {
         return 'Architecture inconnue';
       }
     }
 
     document.getElementById('cpu-architecture').textContent = getCPUArchitecture();
-    document.getElementById('logical-processors').textContent = navigator.hardwareConcurrency;
+    document.getElementById('logical-processors').textContent = navigator.hardwareConcurrency || 'Information non disponible';
   </script>
 </body>
 </html>
