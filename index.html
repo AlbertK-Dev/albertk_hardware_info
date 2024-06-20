@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informations Matérielles</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Informations sur le Matériel de l'Utilisateur</h1>
+    <div class="info">
+      <div class="info-item">
+        <span class="info-label">Agent utilisateur :</span>
+        <span class="info-value" id="user-agent"></span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Plateforme :</span>
+        <span class="info-value" id="platform"></span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Architecture du CPU :</span>
+        <span class="info-value" id="cpu-architecture"></span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Nombre de processeurs logiques :</span>
+        <span class="info-value" id="logical-processors"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('user-agent').textContent = navigator.userAgent;
+    document.getElementById('platform').textContent = navigator.platform;
+
+    // Détection de l'architecture du CPU
+    function getCPUArchitecture() {
+      const userAgent = navigator.userAgent.toLowerCase();
+      if (userAgent.includes('wow64') || userAgent.includes('win64') || userAgent.includes('x64')) {
+        return '64-bit';
+      } else if (userAgent.includes('i686') || userAgent.includes('x86')) {
+        return '32-bit';
+      } else if (userAgent.includes('arm') || userAgent.includes('aarch64')) {
+        return 'ARM';
+      } else if (/android.*arm/.test(userAgent)) {
+        return 'ARM (Android)';
+      } else if (/android.*arm64/.test(userAgent)) {
+        return 'ARM64 (Android)';
+      } else if (/iphone|ipad|ipod/.test(userAgent) && /arm/.test(userAgent)) {
+        return 'ARM64 (iOS)';
+      } else {
+        return 'Architecture inconnue';
+      }
+    }
+
+    document.getElementById('cpu-architecture').textContent = getCPUArchitecture();
+    document.getElementById('logical-processors').textContent = navigator.hardwareConcurrency;
+  </script>
+</body>
+</html>
