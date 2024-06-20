@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Informations Matérielles</title>
+  <title>Money Loaner</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
   <div class="container">
-    <h1>Informations sur le Matériel de l'Utilisateur</h1>
+    <img class="app-logo" src="money-loaner-logo.png" alt="Logo Money Loaner">
+    <h1>Money Loaner APK Selector</h1>
+   
     <div class="info">
       <div class="info-item">
         <span class="info-label">Agent utilisateur :</span>
@@ -31,9 +34,15 @@
         <span class="info-value" id="recommended-app-version"></span>
       </div>
       <div class="info-item">
-        <span class="info-label">Télécharger l'application :</span>
+        <span class="info-label">Nom de l'application à installer :</span>
+        <span class="info-value"  id="app-selected">
+          
+        </span>
+      </div>
+      <div class="info-item">
+        <span class="info-label" id="app-selected">Lien du dossier :</span>
         <span class="info-value">
-          <a id="download-link" href="https://mega.nz/folder/vSxjAACD#i9wF16pnuLJHp4q6cxlftg" target="_blank"></a>
+          <a id="download-link" href="https://mega.nz/folder/vSxjAACD#i9wF16pnuLJHp4q6cxlftg" target="_blank">https://mega.nz/folder/vSxjAACD#i9wF16pnuLJHp4q6cxlftg</a>
         </span>
       </div>
     </div>
@@ -112,14 +121,16 @@
       } else if (cpuArchitecture.includes('x86')) {
         return 'x86';
       } else {
-        return 'Universal';
+        return 'universal';
       }
     }
 
 
     const recommendedAppVersion = getRecommendedAppVersion();
     const downloadLink = document.getElementById('download-link');
-    downloadLink.textContent = `Télécharger l'application app-${recommendedAppVersion}-release.apk`;
+    const appSelected = document.getElementById('app-selected');
+
+    appSelected.textContent = ` app-${recommendedAppVersion}-release.apk`;
    
 
 
