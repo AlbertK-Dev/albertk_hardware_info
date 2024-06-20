@@ -35,6 +35,7 @@
 
     function getCPUArchitecture() {
       const userAgent = navigator.userAgent.toLowerCase();
+      const platform = navigator.platform.toLowerCase();
 
       if (userAgent.includes('wow64') || userAgent.includes('win64') || userAgent.includes('x64')) {
         return '64-bit';
@@ -43,13 +44,27 @@
       } else if (userAgent.includes('arm') || userAgent.includes('aarch64')) {
         return 'ARM';
       } else if (/android/.test(userAgent)) {
-        if (/armv8/.test(userAgent) || /aarch64/.test(userAgent)) {
+        if (/aarch64/.test(userAgent) || /armv8/.test(userAgent)) {
           return 'ARM64 (Android)';
         } else if (/arm/.test(userAgent)) {
           return 'ARM (Android)';
         } else {
-          return 'Architecture inconnue (Android)';
+          // Supposition pour les versions récentes d'Android
+          const androidVersion = userAgent.match(/android\s([0-9\.]+)/);
+          if (androidVersion && parseFloat(androidVersion[1]) >= 5.0) {
+            return 'ARM (supposition Android récent)';
+          } else {
+            return 'Architecture inconnue (Android)';
+          }
         }
+      } else if (platform.includes('linux') && platform.includes('armv8.1')) {
+        return 'ARMv8.1 (Linux)';
+      } else if (platform.includes('linux') && platform.includes('arm')) {
+        return 'ARM (Linux)';
+      } else if (platform.includes('linux') && platform.includes('x86_64')) {
+        return 'x86_64 (Linux)';
+      } else if (platform.includes('linux') && platform.includes('i686')) {
+        return 'x86 (Linux)';
       } else if (/iphone|ipad|ipod/.test(userAgent)) {
         if (/arm64/.test(userAgent) || /aarch64/.test(userAgent)) {
           return 'ARM64 (iOS)';
