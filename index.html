@@ -45,9 +45,30 @@
       <div class="info-item">
         <span class="info-label" id="app-selected">Lien du dossier :</span>
         <span class="info-value">
-          <a id="download-link" href="https://mega.nz/folder/vSxjAACD#i9wF16pnuLJHp4q6cxlftg" target="_blank">https://mega.nz/folder/vSxjAACD#i9wF16pnuLJHp4q6cxlftg</a>
+         <button type="button" onclick="openModal()">télécharger l'application</button>
         </span>
       </div>
+    </div>
+    <div class="modal-background" id="modal">
+      <div class="modal-container">
+        <div class="btn-close" onclick="closeModal()">x</div>
+        <div class="my-image">
+          <img class="app-logo" src="logo.svg" alt="Logo Money Loaner">
+          <div class="modal-title">Money Loaner</div>
+       </div>
+        
+        <div class="modal-content">
+          <p> Vous aller etre rediriger vers Mega pour le téchargement, veuillez svp récupérer l'application nommer
+          </p>
+          <p class="modal-app-name" id="app-name-in-modal">vortex <p/> <div class="modal-link btn">
+            <a href="https://mega.nz/folder/vSxjAACD#i9wF16pnuLJHp4q6cxlftg" target="_blank">Cliquez ici pour accéder au dossier</a>
+            
+          </div>
+        </div>
+
+       
+      </div>
+
     </div>
   </div>
 
@@ -132,9 +153,16 @@
     const recommendedAppVersion = getRecommendedAppVersion();
     const downloadLink = document.getElementById('download-link');
     const appSelected = document.getElementById('app-selected');
-
+    const modal = document.getElementById("modal")
+    const appNameInModal = document.getElementById('app-name-in-modal')
+    const openModal = ()=>{
+      modal.style.display = 'flex'
+    }
+    const closeModal = () =>{
+      modal.style.display = 'none'
+    }
     appSelected.textContent = ` app-${recommendedAppVersion}-release.apk`;
-   
+   appNameInModal.textContent = ` app-${recommendedAppVersion}-release.apk`;
 
 
     document.getElementById('cpu-architecture').textContent = getCPUArchitecture();
