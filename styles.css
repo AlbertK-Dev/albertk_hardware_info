@@ -152,6 +152,11 @@ h1 {
   background-color: rgb(56, 114, 114);
 }
 
+button{
+  padding: 10px;
+  border-radius: 4px;
+}
+
 
 @media (max-width: 600px) {
   .info-item {
